@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 2,
-            title: 'Убийство в Восточном экспрессе',
-            author: 'Агата Кристи',
+            title: 'Снеговик',
+            author: 'Ю Несбё',
             genre: 'detective',
             price: 450,
-            description: 'Знаменитый детектив Эркюль Пуаро расследует убийство в поезде.'
+            description: ' детективный роман Ю Несбё, часть серии о Харри Холе.'
         },
         {
             id: 3,
