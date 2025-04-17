@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Данные о книгах (должны совпадать с catalog.js)
     const books = [
         { id: 1, title: 'Властелин колец', price: 899 },
-        { id: 2, title: 'Убийство в Восточном экспрессе', price: 450 },
+        { id: 2, title: 'Снеговик', price: 450 },
         { id: 3, title: 'Гордость и предубеждение', price: 550 },
         { id: 4, title: 'Краткая история времени', price: 699 },
         { id: 5, title: 'Гарри Поттер и философский камень', price: 799 },
