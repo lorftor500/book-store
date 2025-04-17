@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация хранилища пользователей, если его нет
+    if (!localStorage.getItem('users')) {
+        localStorage.setItem('users', JSON.stringify([]));
+    }
+
     // Переключение между вкладками
     const tabButtons = document.querySelectorAll('.tab-btn');
     
@@ -23,13 +28,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
-            const user = {
-                email: email,
-                name: email.split('@')[0],
-                token: 'fake-jwt-token'
-            };
+            const users = JSON.parse(localStorage.getItem('users'));
+            const user = users.find(u => u.email === email && u.password === password);
             
-            localStorage.setItem('user', JSON.stringify(user));
+            if (!user) {
+                alert('Неверный email или пароль');
+                return;
+            }
+            
+            // Сохраняем текущего пользователя
+            localStorage.setItem('currentUser', JSON.stringify({
+                email: user.email,
+                name: user.name,
+                token: 'fake-jwt-token'
+            }));
+            
             alert('Вы успешно вошли!');
             checkAuth();
             window.location.href = 'profile.html';
@@ -52,13 +65,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const user = {
-                email: email,
+            const users = JSON.parse(localStorage.getItem('users'));
+            
+            // Проверяем, есть ли уже пользователь с таким email
+            if (users.some(u => u.email === email)) {
+                alert('Пользователь с таким email уже зарегистрирован');
+                return;
+            }
+            
+            // Добавляем нового пользователя
+            const newUser = {
                 name: name,
-                token: 'fake-jwt-token'
+                email: email,
+                password: password,
+                orders: [],
+                registeredAt: new Date().toISOString()
             };
             
-            localStorage.setItem('user', JSON.stringify(user));
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Автоматически входим после регистрации
+            localStorage.setItem('currentUser', JSON.stringify({
+                email: newUser.email,
+                name: newUser.name,
+                token: 'fake-jwt-token'
+            }));
+            
             alert('Регистрация успешна!');
             checkAuth();
             window.location.href = 'profile.html';

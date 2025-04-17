@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Проверяем авторизацию
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('currentUser'));
     
     if (!user) {
         alert('Пожалуйста, войдите в систему');
@@ -8,30 +8,27 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
+    // Получаем полные данные пользователя из хранилища
+    const users = JSON.parse(localStorage.getItem('users'));
+    const fullUserData = users.find(u => u.email === user.email);
+    
     // Заполняем данные профиля
-    document.getElementById('profile-name').textContent = user.name;
-    document.getElementById('profile-email').textContent = user.email;
+    document.getElementById('profile-name').textContent = fullUserData.name;
+    document.getElementById('profile-email').textContent = fullUserData.email;
     
     // Генерируем инициалы для аватара
-    const initials = user.name.split(' ').map(n => n[0]).join('');
+    const initials = fullUserData.name.split(' ').map(n => n[0]).join('');
     document.getElementById('avatar-initials').textContent = initials;
+    
+    // Обновляем статистику
+    document.getElementById('orders-count').textContent = fullUserData.orders.length;
+    document.getElementById('books-count').textContent = fullUserData.orders.reduce((total, order) => total + order.items.length, 0);
     
     // Обработчик выхода
     document.getElementById('logout-btn').addEventListener('click', function() {
-        localStorage.removeItem('user');
+        localStorage.removeItem('currentUser');
         window.location.href = 'index.html';
     });
-    
-    // Обновляем ссылку в хедере
-    const authLink = document.getElementById('auth-link');
-    if (authLink) {
-        authLink.textContent = 'Выйти';
-        authLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            localStorage.removeItem('user');
-            window.location.href = 'index.html';
-        });
-    }
     
     // Обновляем счетчик корзины
     updateCartCount();

@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 3,
-            title: 'Снеговик',
-            author: 'Ю Несбё',
+            title: 'Гордость и предубеждение',
+            author: 'Джейн Остин',
             genre: 'romance',
             price: 550,
-            description: ' детективный роман Ю Несбё, часть серии о Харри Холе.'
+            description: 'Классический роман о любви и социальных предрассудках.'
         },
         {
             id: 4,
