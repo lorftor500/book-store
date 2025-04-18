@@ -36,12 +36,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (userIndex !== -1) {
                 const order = {
-                    id: Date.now(),
-                    date: new Date().toISOString(),
-                    items: [...cart],
-                    total: calculateTotal(cart, books),
-                    status: 'Обрабатывается'
-                };
+    id: Date.now(),
+    date: new Date().toISOString(),
+    items: cart.map(item => {
+        const book = books.find(b => b.id === item.id);
+        return {
+            id: item.id,
+            title: book ? book.title : `Книга #${item.id}`,
+            price: book ? book.price : 0,
+            quantity: item.quantity
+        };
+    }),
+    total: calculateTotal(cart, books),
+    status: 'Обрабатывается'
+};
                 
                 users[userIndex].orders.push(order);
                 localStorage.setItem('users', JSON.stringify(users));
